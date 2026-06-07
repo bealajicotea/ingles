@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Usuario {
+  id              Int           @id @default(autoincrement()) // id_usuario 
+  username        String        @unique // username 
+  password        String        // password 
+  email           String        @unique // email 
+  firstName       String        // first_name 
+  lastName        String        // last_name 
+  tipoDeUsuario   Role          @default(ESTUDIANTE) // tipo_de_usuario 
+  facultad        String?       // facultad 
+  anoEscolar      Int?          // año_escolar 
+  grupo           String?       // grupo 
+  carrera         String?       // carrera 
+  curso           String?       // curso 
+  nivel           String?       // nivel 
+
+  inscripciones   Inscripcion[]
+}
+
+enum Role {
+  ADMIN
+  ESTUDIANTE
+}
+
+model Convocatoria {
+  id              Int           @id @default(autoincrement()) // id_convocatoria 
+  tipo            String        // tipo 
+  descripcion     String        // descripción 
+  lugar           String        // lugar 
+  fecha           DateTime      // fecha 
+  hora            String        // hora 
+  profesor        String        // profesor 
+  nivel           String        // nivel 
+  estado          EstadoConv    @default(ABIERTA) // estado 
+
+  inscripciones   Inscripcion[]
+}
+
+enum EstadoConv {
+  ABIERTA
+  CERRADA
+}
+
+model Inscripcion {
+  id              Int          @id @default(autoincrement()) // Inscripción_id 
+  nota            Float?       // nota 
+  
+  usuarioId       Int          // UsuarioId_usuario 
+  usuario         Usuario      @relation(fields: [usuarioId], references: [id])
+  
+  convocatoriaId  Int          // ConvocatoriaId_convocatoria 
+  convocatoria    Convocatoria @relation(fields: [convocatoriaId], references: [id])
+
+  @@unique([usuarioId, convocatoriaId]) // Un usuario solo se inscribe una vez por convocatoria
+}
