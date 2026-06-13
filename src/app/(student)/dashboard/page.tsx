@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
@@ -38,7 +39,10 @@ export default function DashboardPage() {
             <main className="flex-1 p-8 max-w-5xl w-full mx-auto space-y-6">
                 <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 shadow-md">
                     <h1 className="text-2xl font-bold text-purple-400">
-                        ¡Hola de nuevo, {usuario.username}!
+                        ¡Hola de nuevo,{" "}
+                        <Link href={`/perfil/${usuario.id}`} className="hover:text-indigo-400 transition-colors underline underline-offset-4">
+                            {usuario.username}
+                        </Link>!
                     </h1>
                     <p className="text-slate-300 mt-1 text-sm">
                         Bienvenido al sistema unificado de convocatorias y exámenes institucionales.

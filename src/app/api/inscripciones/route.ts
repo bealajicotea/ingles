@@ -9,7 +9,7 @@ export async function GET() {
         const inscripciones = await prisma.inscripcion.findMany({
             include: {
                 usuario: {
-                    select: { firstName: true, lastName: true, email: true, username: true }
+                    select: { id: true, firstName: true, lastName: true, email: true, username: true }
                 },
                 convocatoria: true,
             },

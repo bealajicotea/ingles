@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useQueryClient } from "@tanstack/react-query";
 import { useInscripciones } from "@/hooks/useInscripciones";
 import { useConvocatorias } from "@/hooks/useConvocatorias";
@@ -111,7 +112,9 @@ export default function CalificacionesPage() {
                             {filtradas.map((ins: any) => (
                                 <tr key={ins.id} className="hover:bg-zinc-800/30 transition-colors">
                                     <td className="p-4 font-medium text-white">
-                                        {ins.usuario.firstName} {ins.usuario.lastName}
+                                        <Link href={`/perfil/${ins.usuario.id}`} className="hover:text-indigo-400 transition-colors">
+                                            {ins.usuario.firstName} {ins.usuario.lastName}
+                                        </Link>
                                         <div className="text-xs text-zinc-500">{ins.usuario.username}</div>
                                     </td>
                                     <td className="p-4 text-zinc-300">

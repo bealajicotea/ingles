@@ -30,9 +30,9 @@ export default function Navbar() {
                 <div>
                     {usuario ? (
                         <div className="flex items-center space-x-4">
-                            <span className="text-xs bg-zinc-800 px-2.5 py-1 rounded text-zinc-300 font-mono">
+                            <Link href={`/perfil/${usuario.id}`} className="text-xs bg-zinc-800 px-2.5 py-1 rounded text-zinc-300 font-mono hover:bg-zinc-700 transition">
                                 {usuario.username} ({usuario.rol})
-                            </span>
+                            </Link>
                             <button
                                 onClick={logout}
                                 className="text-xs bg-red-600 hover:bg-red-500 px-3 py-1.5 rounded transition font-medium text-white cursor-pointer"

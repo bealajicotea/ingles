@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useUsuarios } from "@/hooks/useUsuarios";
 import UsuarioFormModal, { Usuario, UsuarioFormData } from "@/components/UsuarioFormModal";
 import { CreateUsuarioInput } from "@/services/usuarioService";
@@ -98,7 +99,9 @@ export default function UsuariosPage() {
                             {usuarios.map((usuario: any) => (
                                 <tr key={usuario.id} className="hover:bg-zinc-800/30 transition-colors">
                                     <td className="p-4 font-medium text-white">
-                                        {usuario.firstName} {usuario.lastName}
+                                        <Link href={`/perfil/${usuario.id}`} className="hover:text-indigo-400 transition-colors">
+                                            {usuario.firstName} {usuario.lastName}
+                                        </Link>
                                     </td>
                                     <td className="p-4 text-zinc-300">{usuario.username}</td>
                                     <td className="p-4 text-zinc-300">{usuario.email}</td>

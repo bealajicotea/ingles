@@ -2,8 +2,41 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        const { searchParams } = new URL(request.url);
+        const id = searchParams.get("id");
+
+        if (id) {
+            const usuario = await prisma.usuario.findUnique({
+                where: { id: Number(id) },
+                select: {
+                    id: true,
+                    username: true,
+                    email: true,
+                    firstName: true,
+                    lastName: true,
+                    rol: true,
+                    facultad: true,
+                    anoEscolar: true,
+                    grupo: true,
+                    carrera: true,
+                    curso: true,
+                    nivel: true,
+                    certificado: true,
+                },
+            });
+
+            if (!usuario) {
+                return NextResponse.json(
+                    { success: false, message: "Usuario no encontrado" },
+                    { status: 404 }
+                );
+            }
+
+            return NextResponse.json({ success: true, data: usuario }, { status: 200 });
+        }
+
         const usuarios = await prisma.usuario.findMany({
             select: {
                 id: true,
