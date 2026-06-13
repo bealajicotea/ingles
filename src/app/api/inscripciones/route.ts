@@ -54,12 +54,27 @@ export async function PUT(request: Request) {
             where: { id },
             data: { nota },
             include: {
-                usuario: { select: { firstName: true, lastName: true, username: true } },
+                usuario: { select: { id: true, firstName: true, lastName: true, username: true, certificado: true } },
                 convocatoria: true,
             },
         });
 
-        return NextResponse.json({ success: true, data: actualizada }, { status: 200 });
+        if (nota >= 6 && !actualizada.usuario.certificado) {
+            await prisma.usuario.update({
+                where: { id: actualizada.usuario.id },
+                data: { certificado: true },
+            });
+        }
+
+        const result = {
+            ...actualizada,
+            usuario: {
+                ...actualizada.usuario,
+                certificado: nota >= 6 ? true : actualizada.usuario.certificado,
+            },
+        };
+
+        return NextResponse.json({ success: true, data: result }, { status: 200 });
     } catch (error) {
         console.error("Error en PUT /api/inscripciones:", error);
         return NextResponse.json(

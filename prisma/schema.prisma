@@ -16,16 +16,17 @@ model Usuario {
   id              Int           @id @default(autoincrement()) // id_usuario 
   username        String        @unique // username 
   password        String        // password 
-  email           String        @unique // email 
-  firstName       String        // first_name 
-  lastName        String        // last_name 
-  tipoDeUsuario   Role          @default(ESTUDIANTE) // tipo_de_usuario 
+  email           String?        @unique // email 
+  firstName       String?        // first_name 
+  lastName        String?        // last_name 
+  rol             Role          @default(ESTUDIANTE) // rol 
   facultad        String?       // facultad 
   anoEscolar      Int?          // año_escolar 
   grupo           String?       // grupo 
   carrera         String?       // carrera 
   curso           String?       // curso 
-  nivel           String?       // nivel 
+  nivel           String?       // nivel
+  certificado     Boolean       @default(false) // certificado 
 
   inscripciones   Inscripcion[]
 }
@@ -48,6 +49,7 @@ model Convocatoria {
 
   inscripciones   Inscripcion[]
 }
+
 
 enum EstadoConv {
   ABIERTA

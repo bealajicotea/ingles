@@ -4,7 +4,7 @@ import { persist } from "zustand/middleware";
 interface UsuarioLogueado {
     id: number;
     username: string;
-    tipoDeUsuario: "ADMIN" | "ESTUDIANTE";
+    rol: "ADMIN" | "ESTUDIANTE";
 }
 
 interface AuthState {
@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
             clearAuth: () => set({ token: null, usuario: null }),
         }),
         {
-            name: "uci-auth-storage", // Nombre de la clave en localStorage
+            name: "uci-auth",
         }
     )
 );

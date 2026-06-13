@@ -1,10 +1,5 @@
-import UsuariosPage from "@/components/usuarios/formulario";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  return (
-    <>
-      <h1>Bienvenido a la aplicación de gestión de usuarios</h1>
-      <UsuariosPage />
-    </>
-  );
+export default function RootPage() {
+  redirect("/login");
 }

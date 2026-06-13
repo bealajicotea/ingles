@@ -16,11 +16,14 @@ export function useAuth() {
             const result = await authService.login(payload);
 
             if (result.success) {
-                // Guardamos en Zustand (y automáticamente en localStorage)
-                // Nota: Asegúrate de que tu endpoint /api/auth/login devuelva el token y el usuario en su JSON
                 setAuth(result.token || "mock_token_jwt", result.data || result.usuario);
 
-                router.push("/dashboard");
+                const role = result.data?.rol || result.usuario?.rol || result.data?.tipoDeUsuario || result.usuario?.tipoDeUsuario;
+                if (role === "ADMIN") {
+                    router.push("/admin");
+                } else {
+                    router.push("/dashboard");
+                }
             } else {
                 setErrorMsg(result.message || "Credenciales inválidas.");
             }
@@ -31,7 +34,8 @@ export function useAuth() {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
+        await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
         clearAuth();
         router.push("/login");
     };

@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         const token = await new SignJWT({
             id: usuario.id,
             username: usuario.username,
-            tipoDeUsuario: usuario.tipoDeUsuario, // 'ADMIN' o 'ESTUDIANTE'
+            rol: usuario.rol, // 'ADMIN' o 'ESTUDIANTE'
         })
             .setProtectedHeader({ alg: "HS256" })
             .setIssuedAt()
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
                 usuario: {
                     id: usuario.id,
                     username: usuario.username,
-                    tipoDeUsuario: usuario.tipoDeUsuario,
+                    rol: usuario.rol,
                 },
             },
             { status: 200 }

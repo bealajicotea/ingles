@@ -11,7 +11,7 @@ export async function GET() {
                 email: true,
                 firstName: true,
                 lastName: true,
-                tipoDeUsuario: true,
+                rol: true,
             },
             orderBy: { id: "desc" },
         });
@@ -31,28 +31,38 @@ export async function POST(request: Request) {
         const body = await request.json();
 
         const {
-            username, email, password, firstName, lastName, tipoDeUsuario,
+            username, email, password, firstName, lastName, rol,
             facultad, anoEscolar, grupo, carrera, curso, nivel
         } = body;
 
-        if (!username || !email || !password || !firstName || !lastName) {
+        if (!username || !password) {
             return NextResponse.json(
                 { success: false, message: "Faltan campos obligatorios" },
                 { status: 400 }
             );
         }
 
-        const userExists = await prisma.usuario.findFirst({
-            where: {
-                OR: [{ email }, { username }],
-            },
+        const existingByUsername = await prisma.usuario.findUnique({
+            where: { username },
         });
 
-        if (userExists) {
+        if (existingByUsername) {
             return NextResponse.json(
-                { success: false, message: "El username o el email ya existen" },
+                { success: false, message: "El username ya existe" },
                 { status: 400 }
             );
+        }
+
+        if (email) {
+            const existingByEmail = await prisma.usuario.findUnique({
+                where: { email },
+            });
+            if (existingByEmail) {
+                return NextResponse.json(
+                    { success: false, message: "El email ya existe" },
+                    { status: 400 }
+                );
+            }
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -60,17 +70,17 @@ export async function POST(request: Request) {
         const nuevoUsuario = await prisma.usuario.create({
             data: {
                 username,
-                email,
+                ...(email && { email }),
+                ...(firstName && { firstName }),
+                ...(lastName && { lastName }),
                 password: hashedPassword,
-                firstName,
-                lastName,
-                tipoDeUsuario: tipoDeUsuario || "ESTUDIANTE",
-                facultad,
-                anoEscolar: anoEscolar ? parseInt(anoEscolar, 10) : null,
-                grupo,
-                carrera,
-                curso,
-                nivel,
+                rol: rol || "ESTUDIANTE",
+                ...(facultad && { facultad }),
+                ...(anoEscolar && { anoEscolar: parseInt(anoEscolar, 10) }),
+                ...(grupo && { grupo }),
+                ...(carrera && { carrera }),
+                ...(curso && { curso }),
+                ...(nivel && { nivel }),
             },
             select: {
                 id: true,
@@ -78,7 +88,7 @@ export async function POST(request: Request) {
                 email: true,
                 firstName: true,
                 lastName: true,
-                tipoDeUsuario: true,
+                rol: true,
             },
         });
 
@@ -108,14 +118,14 @@ export async function PUT(request: Request) {
         }
 
         const body = await request.json();
-        const { username, email, password, firstName, lastName, tipoDeUsuario } = body;
+        const { username, email, password, firstName, lastName, rol } = body;
 
         const updateData: any = {};
         if (username !== undefined) updateData.username = username;
         if (email !== undefined) updateData.email = email;
         if (firstName !== undefined) updateData.firstName = firstName;
         if (lastName !== undefined) updateData.lastName = lastName;
-        if (tipoDeUsuario !== undefined) updateData.tipoDeUsuario = tipoDeUsuario;
+        if (rol !== undefined) updateData.rol = rol;
         if (password !== undefined && password !== "") {
             updateData.password = await bcrypt.hash(password, 10);
         }
@@ -129,7 +139,7 @@ export async function PUT(request: Request) {
                 email: true,
                 firstName: true,
                 lastName: true,
-                tipoDeUsuario: true,
+                rol: true,
             },
         });
 

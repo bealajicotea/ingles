@@ -8,7 +8,7 @@ export interface Usuario {
     email: string;
     firstName: string;
     lastName: string;
-    tipoDeUsuario: "ADMIN" | "ESTUDIANTE";
+    rol: "ADMIN" | "ESTUDIANTE";
 }
 
 export interface UsuarioFormData {
@@ -16,7 +16,7 @@ export interface UsuarioFormData {
     email: string;
     firstName: string;
     lastName: string;
-    tipoDeUsuario: "ADMIN" | "ESTUDIANTE";
+    rol: "ADMIN" | "ESTUDIANTE";
     password?: string;
 }
 
@@ -47,7 +47,7 @@ export default function UsuarioFormModal({
             email: formData.get("email") as string,
             firstName: formData.get("firstName") as string,
             lastName: formData.get("lastName") as string,
-            tipoDeUsuario: formData.get("tipoDeUsuario") as "ADMIN" | "ESTUDIANTE",
+            rol: formData.get("rol") as "ADMIN" | "ESTUDIANTE",
         };
 
         const password = formData.get("password") as string;
@@ -136,8 +136,8 @@ export default function UsuarioFormModal({
                         <div>
                             <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Rol</label>
                             <select
-                                name="tipoDeUsuario"
-                                defaultValue={editingUsuario?.tipoDeUsuario || "ESTUDIANTE"}
+                                name="rol"
+                                defaultValue={editingUsuario?.rol || "ESTUDIANTE"}
                                 className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             >
                                 <option value="ESTUDIANTE">Estudiante</option>

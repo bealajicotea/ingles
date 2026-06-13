@@ -104,12 +104,12 @@ export default function UsuariosPage() {
                                     <td className="p-4 text-zinc-300">{usuario.email}</td>
                                     <td className="p-4">
                                         <span
-                                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${usuario.tipoDeUsuario === "ADMIN"
+                                            className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${usuario.rol === "ADMIN"
                                                     ? "bg-red-950/40 border border-red-900/30 text-red-400"
                                                     : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                                                 }`}
                                         >
-                                            {usuario.tipoDeUsuario}
+                                            {usuario.rol}
                                         </span>
                                     </td>
                                     <td className="p-4 text-right space-x-2">

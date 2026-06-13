@@ -18,6 +18,9 @@ export default function DashboardPage() {
         if (isHydrated && !usuario) {
             router.push("/login");
         }
+        if (isHydrated && usuario?.rol === "ADMIN") {
+            router.push("/admin");
+        }
     }, [isHydrated, usuario, router]);
 
     if (!isHydrated || !usuario) {
@@ -46,7 +49,7 @@ export default function DashboardPage() {
                     <div className="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-2">
                         <h2 className="text-lg font-semibold text-slate-200">Resumen del Perfil</h2>
                         <div className="text-sm text-slate-400 space-y-1">
-                            <p><b>Rol asignado:</b> {usuario.tipoDeUsuario}</p>
+                            <p><b>Rol asignado:</b> {usuario.rol}</p>
                             <p><b>Identificador de cuenta:</b> #{usuario.id}</p>
                         </div>
                     </div>
@@ -55,38 +58,23 @@ export default function DashboardPage() {
                         <div>
                             <h2 className="text-lg font-semibold text-slate-200">Accesos Rápidos</h2>
                             <p className="text-sm text-slate-400">
-                                {usuario.tipoDeUsuario === "ADMIN"
-                                    ? "Tienes privilegios para emitir regulaciones, aperturar cursos y registrar calificaciones."
-                                    : "Puedes revisar tus notas vigentes e inscribirte en convocatorias abiertas."}
+                                Puedes revisar tus notas vigentes e inscribirte en convocatorias abiertas.
                             </p>
                         </div>
 
                         <div className="space-y-2">
-                            {usuario.tipoDeUsuario === "ADMIN" && (
-                                <button
-                                    onClick={() => router.push("/admin/convocatorias")}
-                                    className="w-full bg-purple-600 hover:bg-purple-500 text-sm font-medium p-2 rounded transition-colors text-white"
-                                >
-                                    Ir a Panel de Control de Convocatorias
-                                </button>
-                            )}
-
-                            {usuario.tipoDeUsuario === "ESTUDIANTE" && (
-                                <>
-                                    <button
-                                        onClick={() => router.push("/convocatorias")}
-                                        className="w-full bg-blue-600 hover:bg-blue-500 text-sm font-medium p-2 rounded transition-colors text-white"
-                                    >
-                                        Ver convocatorias disponibles
-                                    </button>
-                                    <button
-                                        onClick={() => router.push("/mis-inscripciones")}
-                                        className="w-full bg-emerald-600 hover:bg-emerald-500 text-sm font-medium p-2 rounded transition-colors text-white"
-                                    >
-                                        Ver mis resultados
-                                    </button>
-                                </>
-                            )}
+                            <button
+                                onClick={() => router.push("/convocatorias")}
+                                className="w-full bg-blue-600 hover:bg-blue-500 text-sm font-medium p-2 rounded transition-colors text-white"
+                            >
+                                Ver convocatorias disponibles
+                            </button>
+                            <button
+                                onClick={() => router.push("/mis-inscripciones")}
+                                className="w-full bg-emerald-600 hover:bg-emerald-500 text-sm font-medium p-2 rounded transition-colors text-white"
+                            >
+                                Ver mis resultados
+                            </button>
                         </div>
                     </div>
                 </div>

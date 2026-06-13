@@ -43,7 +43,7 @@ export async function POST(request: Request) {
                 password: hashedPassword,
                 firstName,
                 lastName,
-                tipoDeUsuario: "ESTUDIANTE",
+                rol: "ESTUDIANTE",
             },
             select: {
                 id: true,
@@ -51,7 +51,7 @@ export async function POST(request: Request) {
                 email: true,
                 firstName: true,
                 lastName: true,
-                tipoDeUsuario: true,
+                rol: true,
             },
         });
 
