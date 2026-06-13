@@ -151,7 +151,7 @@ export async function PUT(request: Request) {
         }
 
         const body = await request.json();
-        const { username, email, password, firstName, lastName, rol } = body;
+        const { username, email, password, firstName, lastName, rol, facultad, anoEscolar, grupo, carrera, curso, nivel } = body;
 
         const updateData: any = {};
         if (username !== undefined) updateData.username = username;
@@ -162,6 +162,12 @@ export async function PUT(request: Request) {
         if (password !== undefined && password !== "") {
             updateData.password = await bcrypt.hash(password, 10);
         }
+        if (facultad !== undefined) updateData.facultad = facultad;
+        if (anoEscolar !== undefined) updateData.anoEscolar = anoEscolar ? parseInt(anoEscolar, 10) : null;
+        if (grupo !== undefined) updateData.grupo = grupo;
+        if (carrera !== undefined) updateData.carrera = carrera;
+        if (curso !== undefined) updateData.curso = curso;
+        if (nivel !== undefined) updateData.nivel = nivel;
 
         const actualizado = await prisma.usuario.update({
             where: { id },
@@ -173,6 +179,13 @@ export async function PUT(request: Request) {
                 firstName: true,
                 lastName: true,
                 rol: true,
+                facultad: true,
+                anoEscolar: true,
+                grupo: true,
+                carrera: true,
+                curso: true,
+                nivel: true,
+                certificado: true,
             },
         });
 
