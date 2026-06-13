@@ -243,12 +243,23 @@ export default function PerfilPage() {
                     )}
                 </div>
 
-                <button
-                    onClick={() => router.back()}
-                    className="rounded bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition"
-                >
-                    ← Volver
-                </button>
+                <div className="flex gap-3">
+                    <button
+                        onClick={() => router.back()}
+                        className="rounded bg-zinc-800 px-4 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition"
+                    >
+                        ← Volver
+                    </button>
+                    {perfil.certificado && (
+                        <a
+                            href={`/api/certificado/${perfil.id}`}
+                            download
+                            className="inline-block rounded bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition"
+                        >
+                            🎓 Descargar Certificado PDF
+                        </a>
+                    )}
+                </div>
             </main>
         </div>
     );
