@@ -7,7 +7,7 @@ interface ApiResponse<T> {
 }
 
 export type CreateInscripcionInput = Omit<Inscripcion, "id">;
-export type AsignarNotaInput = { inscripcionId: number; nota: number };
+export type AsignarNotaInput = { inscripcionId: number; nota: string | null };
 
 export const inscripcionService = {
     async getAll(): Promise<Inscripcion[]> {

@@ -36,16 +36,10 @@ export async function PUT(request: Request) {
         const body = await request.json();
         const { nota } = body;
 
-        if (nota === undefined || typeof nota !== "number") {
+        const nivelesValidos = ["A1", "A2", "B1", "B2", "C1", "C2"];
+        if (nota !== null && !nivelesValidos.includes(nota)) {
             return NextResponse.json(
-                { success: false, message: "El campo nota es requerido." },
-                { status: 400 }
-            );
-        }
-
-        if (nota < 0 || nota > 10) {
-            return NextResponse.json(
-                { success: false, message: "La nota debe estar entre 0 y 10." },
+                { success: false, message: "La nota debe ser un nivel CEFR válido: A1, A2, B1, B2, C1, C2." },
                 { status: 400 }
             );
         }
@@ -59,7 +53,10 @@ export async function PUT(request: Request) {
             },
         });
 
-        if (nota >= 6 && !actualizada.usuario.certificado) {
+        const nivelesAprobados = ["A2", "B1", "B2", "C1", "C2"];
+        const aprobado = nota !== null && nivelesAprobados.includes(nota);
+
+        if (aprobado && !actualizada.usuario.certificado) {
             await prisma.usuario.update({
                 where: { id: actualizada.usuario.id },
                 data: { certificado: true },
@@ -70,7 +67,7 @@ export async function PUT(request: Request) {
             ...actualizada,
             usuario: {
                 ...actualizada.usuario,
-                certificado: nota >= 6 ? true : actualizada.usuario.certificado,
+                certificado: aprobado ? true : actualizada.usuario.certificado,
             },
         };
 

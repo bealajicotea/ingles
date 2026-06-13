@@ -38,7 +38,6 @@ enum Role {
 
 model Convocatoria {
   id              Int           @id @default(autoincrement()) // id_convocatoria 
-  tipo            String        // tipo 
   descripcion     String        // descripción 
   lugar           String        // lugar 
   fecha           DateTime      // fecha 
@@ -58,7 +57,7 @@ enum EstadoConv {
 
 model Inscripcion {
   id              Int          @id @default(autoincrement()) // Inscripción_id 
-  nota            Float?       // nota 
+  nota            String?       // nota (nivel CEFR: A1, A2, B1, B2, C1, C2) 
   
   usuarioId       Int          // UsuarioId_usuario 
   usuario         Usuario      @relation(fields: [usuarioId], references: [id])

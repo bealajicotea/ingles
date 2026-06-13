@@ -7,10 +7,9 @@ import Navbar from "@/components/Navbar";
 
 interface InscripcionConConvocatoria {
     id: number;
-    nota: number | null;
+    nota: string | null;
     convocatoria: {
         id: number;
-        tipo: string;
         nivel: string;
         descripcion: string;
         fecha: string;
@@ -67,7 +66,7 @@ export default function MisInscripcionesPage() {
                                 <div key={ins.id} className="bg-slate-800 border border-slate-700 rounded-xl p-5 space-y-3">
                                     <div className="flex justify-between items-start">
                                         <div>
-                                            <h3 className="text-lg font-bold text-slate-100">{c.tipo} · {c.nivel}</h3>
+                                            <h3 className="text-lg font-bold text-slate-100">{c.nivel}</h3>
                                             <p className="text-xs text-slate-400">{c.descripcion}</p>
                                         </div>
                                         <span className={`text-xs px-2 py-0.5 rounded font-bold ${c.estado === "ABIERTA" ? "bg-green-900 text-green-200" : "bg-red-900 text-red-200"}`}>
@@ -86,9 +85,8 @@ export default function MisInscripcionesPage() {
                                         {notaAsignada ? (
                                             <div className="flex items-center gap-3">
                                                 <span className="text-3xl font-bold text-emerald-400">{ins.nota}</span>
-                                                <span className="text-xs text-slate-400">/ 10</span>
-                                                <span className={`text-xs font-semibold px-2 py-0.5 rounded ${ins.nota! >= 6 ? "bg-emerald-900/40 text-emerald-300" : "bg-red-900/40 text-red-300"}`}>
-                                                    {ins.nota! >= 6 ? "Aprobado" : "Suspenso"}
+                                                <span className={`text-xs font-semibold px-2 py-0.5 rounded ${["A2", "B1", "B2", "C1", "C2"].includes(ins.nota!) ? "bg-emerald-900/40 text-emerald-300" : "bg-red-900/40 text-red-300"}`}>
+                                                    {["A2", "B1", "B2", "C1", "C2"].includes(ins.nota!) ? "Aprobado" : "Suspenso"}
                                                 </span>
                                             </div>
                                         ) : (

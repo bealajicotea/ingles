@@ -86,7 +86,7 @@ export default function ConvocatoriasPage() {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="border-b border-zinc-800 bg-zinc-900/50 text-xs font-semibold uppercase tracking-wider text-zinc-400">
-                                <th className="p-4">Tipo / Nivel</th>
+                                <th className="p-4">Nivel</th>
                                 <th className="p-4">Descripción</th>
                                 <th className="p-4">Lugar</th>
                                 <th className="p-4">Fecha / Hora</th>
@@ -99,9 +99,8 @@ export default function ConvocatoriasPage() {
                             {convocatorias.map((convocatoria: any) => (
                                 <tr key={convocatoria.id} className="hover:bg-zinc-800/30 transition-colors">
                                     <td className="p-4 font-medium text-white">
-                                        <div>{convocatoria.tipo}</div>
-                                        <span className="inline-block mt-1 rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-400">
-                                            Nivel {convocatoria.nivel}
+                                        <span className="inline-block rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-400">
+                                            {convocatoria.nivel}
                                         </span>
                                     </td>
                                     <td className="p-4 text-zinc-300 max-w-xs truncate">{convocatoria.descripcion}</td>

@@ -27,10 +27,10 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { tipo, descripcion, lugar, fecha, hora, profesor, nivel, estado } = body;
+        const { descripcion, lugar, fecha, hora, profesor, nivel, estado } = body;
 
         // Validación de campos requeridos obligatorios
-        if (!tipo || !descripcion || !lugar || !fecha || !hora || !profesor || !nivel) {
+        if (!descripcion || !lugar || !fecha || !hora || !profesor || !nivel) {
             return NextResponse.json(
                 { success: false, message: "Faltan campos obligatorios para la convocatoria." },
                 { status: 400 }
@@ -40,7 +40,6 @@ export async function POST(request: Request) {
         // Insertar en la DB local usando los tipos de tu esquema
         const nuevaConvocatoria = await prisma.convocatoria.create({
             data: {
-                tipo,
                 descripcion,
                 lugar,
                 fecha: new Date(fecha), // Convertimos el string string de la fecha (YYYY-MM-DD) a DateTime de JS
@@ -80,12 +79,11 @@ export async function PUT(request: Request) {
         }
 
         const body = await request.json();
-        const { tipo, descripcion, lugar, fecha, hora, profesor, nivel, estado } = body;
+        const { descripcion, lugar, fecha, hora, profesor, nivel, estado } = body;
 
         const actualizada = await prisma.convocatoria.update({
             where: { id },
             data: {
-                ...(tipo !== undefined && { tipo }),
                 ...(descripcion !== undefined && { descripcion }),
                 ...(lugar !== undefined && { lugar }),
                 ...(fecha !== undefined && { fecha: new Date(fecha) }),

@@ -5,7 +5,6 @@ interface ApiResponse<T> {
 }
 
 export type CreateConvocatoriaInput = {
-    tipo: string;
     descripcion: string;
     lugar: string;
     fecha: string;
@@ -19,7 +18,6 @@ export type UpdateConvocatoriaInput = Partial<CreateConvocatoriaInput>;
 
 export interface Convocatoria {
     id: number;
-    tipo: string;
     descripcion: string;
     lugar: string;
     fecha: string;

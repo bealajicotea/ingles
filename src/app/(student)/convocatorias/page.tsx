@@ -80,9 +80,6 @@ export default function ConvocatoriasPublicPage() {
                                 <div key={conv.id} className="bg-slate-800 border border-slate-700 rounded-xl p-5 flex flex-col justify-between hover:border-slate-600 transition-colors">
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-center">
-                                            <span className="text-xs px-2 py-0.5 rounded-md bg-blue-900 text-blue-200 font-semibold uppercase">
-                                                {conv.tipo}
-                                            </span>
                                             <span className={`text-xs px-2 py-0.5 rounded font-bold ${estaCerrada ? "bg-red-900 text-red-200" : "bg-green-900 text-green-200"}`}>
                                                 {conv.estado}
                                             </span>

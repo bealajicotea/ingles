@@ -19,12 +19,14 @@ export default function CalificacionesPage() {
         ? inscripciones
         : inscripciones.filter((i: any) => i.convocatoriaId === filtroConvocatoriaId);
 
+    const nivelesCefr = ["A1", "A2", "B1", "B2", "C1", "C2"];
+
     const handleGuardarNota = async (inscripcionId: number) => {
         const valor = notasEditadas[inscripcionId];
         if (valor === undefined || valor.trim() === "") return;
 
-        const nota = parseFloat(valor);
-        if (isNaN(nota) || nota < 0 || nota > 10) {
+        const nota = valor.trim();
+        if (!nivelesCefr.includes(nota)) {
             setFeedbackId({ id: inscripcionId, tipo: "error" });
             setTimeout(() => setFeedbackId(null), 2000);
             return;
@@ -79,7 +81,7 @@ export default function CalificacionesPage() {
                     <option value="todas">Todas las convocatorias</option>
                     {convocatorias.map((c: any) => (
                         <option key={c.id} value={c.id}>
-                            {c.tipo} - {c.nivel} ({c.estado})
+                            {c.nivel} - {c.descripcion} ({c.estado})
                         </option>
                     ))}
                 </select>
@@ -113,14 +115,13 @@ export default function CalificacionesPage() {
                                         <div className="text-xs text-zinc-500">{ins.usuario.username}</div>
                                     </td>
                                     <td className="p-4 text-zinc-300">
-                                        <div>{ins.convocatoria.tipo}</div>
-                                        <span className="inline-block mt-1 rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-400">
-                                            Nivel {ins.convocatoria.nivel}
+                                        <span className="inline-block rounded bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-400">
+                                            {ins.convocatoria.nivel}
                                         </span>
                                     </td>
                                     <td className="p-4">
                                         {ins.nota !== null && ins.nota !== undefined ? (
-                                            <span className={`font-bold ${ins.nota >= 6 ? "text-emerald-400" : "text-red-400"}`}>
+                                            <span className={`font-bold ${["A2", "B1", "B2", "C1", "C2"].includes(ins.nota) ? "text-emerald-400" : "text-red-400"}`}>
                                                 {ins.nota}
                                             </span>
                                         ) : (
@@ -128,12 +129,7 @@ export default function CalificacionesPage() {
                                         )}
                                     </td>
                                     <td className="p-4">
-                                        <input
-                                            type="number"
-                                            step="0.1"
-                                            min="0"
-                                            max="10"
-                                            placeholder="0-10"
+                                        <select
                                             value={notasEditadas[ins.id] ?? ""}
                                             onChange={(e) =>
                                                 setNotasEditadas((prev) => ({
@@ -141,8 +137,13 @@ export default function CalificacionesPage() {
                                                     [ins.id]: e.target.value,
                                                 }))
                                             }
-                                            className="w-24 rounded-lg bg-zinc-800 border border-zinc-700 p-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                                        />
+                                            className="w-28 rounded-lg bg-zinc-800 border border-zinc-700 p-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                        >
+                                            <option value="">Seleccionar</option>
+                                            {nivelesCefr.map((nivel) => (
+                                                <option key={nivel} value={nivel}>{nivel}</option>
+                                            ))}
+                                        </select>
                                     </td>
                                     <td className="p-4 text-right">
                                         {savingId === ins.id ? (

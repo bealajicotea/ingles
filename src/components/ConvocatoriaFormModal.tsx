@@ -4,7 +4,6 @@ import { useRef } from "react";
 
 export interface Convocatoria {
     id: number;
-    tipo: string;
     descripcion: string;
     lugar: string;
     fecha: string;
@@ -37,7 +36,6 @@ export default function ConvocatoriaFormModal({
 
         const formData = new FormData(formRef.current);
         const data = {
-            tipo: formData.get("tipo") as string,
             descripcion: formData.get("descripcion") as string,
             lugar: formData.get("lugar") as string,
             fecha: formData.get("fecha") as string,
@@ -64,26 +62,21 @@ export default function ConvocatoriaFormModal({
                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Tipo</label>
-                            <input
-                                type="text"
-                                name="tipo"
-                                required
-                                defaultValue={editingConvocatoria?.tipo || ""}
-                                placeholder="Ej. Examen, Teórico"
-                                className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Nivel</label>
-                            <input
-                                type="text"
+                            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Nivel de Idioma</label>
+                            <select
                                 name="nivel"
                                 required
                                 defaultValue={editingConvocatoria?.nivel || ""}
-                                placeholder="Ej. B1, Avanzado"
                                 className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                            />
+                            >
+                                <option value="" disabled>Seleccionar nivel</option>
+                                <option value="A1">A1</option>
+                                <option value="A2">A2</option>
+                                <option value="B1">B1</option>
+                                <option value="B2">B2</option>
+                                <option value="C1">C1</option>
+                                <option value="C2">C2</option>
+                            </select>
                         </div>
                     </div>
 
@@ -103,11 +96,10 @@ export default function ConvocatoriaFormModal({
                         <div>
                             <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 mb-1">Fecha</label>
                             <input
-                                type="text"
+                                type="date"
                                 name="fecha"
                                 required
-                                defaultValue={editingConvocatoria?.fecha || ""}
-                                placeholder="Ej. 2026-06-15"
+                                defaultValue={editingConvocatoria?.fecha ? new Date(editingConvocatoria.fecha).toISOString().split('T')[0] : ""}
                                 className="w-full rounded-lg bg-zinc-800 border border-zinc-700 p-2 text-sm text-zinc-100 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                             />
                         </div>
