@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/authStore";
 import { authService } from "@/services/authService";
 
 export function useAuth() {
     const router = useRouter();
+    const queryClient = useQueryClient();
     const { token, usuario, setAuth, clearAuth } = useAuthStore();
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -16,6 +18,7 @@ export function useAuth() {
             const result = await authService.login(payload);
 
             if (result.success) {
+                queryClient.clear();
                 setAuth(result.token || "mock_token_jwt", result.data || result.usuario);
 
                 const role = result.data?.rol || result.usuario?.rol || result.data?.tipoDeUsuario || result.usuario?.tipoDeUsuario;
@@ -36,6 +39,7 @@ export function useAuth() {
 
     const logout = async () => {
         await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+        queryClient.clear();
         clearAuth();
         router.push("/login");
     };

@@ -50,6 +50,22 @@ export async function POST(request: Request) {
             },
         });
 
+        const estudiantes = await prisma.usuario.findMany({
+            where: { rol: "ESTUDIANTE" },
+            select: { id: true },
+        });
+
+        if (estudiantes.length > 0) {
+            await prisma.notificacion.createMany({
+                data: estudiantes.map((e) => ({
+                    usuarioId: e.id,
+                    tipo: "NUEVA_CONVOCATORIA",
+                    mensaje: `Nueva convocatoria publicada: ${descripcion} (${nivel})`,
+                    convocatoriaId: nuevaConvocatoria.id,
+                })),
+            });
+        }
+
         return NextResponse.json(
             { success: true, message: "Convocatoria publicada con éxito", data: nuevaConvocatoria },
             { status: 201 }

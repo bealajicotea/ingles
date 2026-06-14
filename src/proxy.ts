@@ -33,7 +33,7 @@ export async function proxy(request: NextRequest) {
             return NextResponse.redirect(new URL("/dashboard", request.url));
         }
 
-        if ((pathname.startsWith("/convocatorias") || pathname.startsWith("/mis-inscripciones") || pathname.startsWith("/dashboard")) && rol !== "ESTUDIANTE") {
+        if ((pathname.startsWith("/convocatorias") || pathname.startsWith("/mis-inscripciones") || pathname.startsWith("/mis-notificaciones") || pathname.startsWith("/dashboard")) && rol !== "ESTUDIANTE") {
             return NextResponse.redirect(new URL("/admin", request.url));
         }
 
@@ -44,5 +44,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/login", "/dashboard", "/convocatorias", "/mis-inscripciones", "/perfil/:path*", "/admin/:path*"],
+    matcher: ["/", "/login", "/dashboard", "/convocatorias", "/mis-inscripciones", "/mis-notificaciones", "/perfil/:path*", "/admin/:path*"],
 };

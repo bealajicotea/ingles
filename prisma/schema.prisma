@@ -29,6 +29,7 @@ model Usuario {
   certificado     Boolean       @default(false) // certificado 
 
   inscripciones   Inscripcion[]
+  notificaciones  Notificacion[]
 }
 
 enum Role {
@@ -47,6 +48,7 @@ model Convocatoria {
   estado          EstadoConv    @default(ABIERTA) // estado 
 
   inscripciones   Inscripcion[]
+  notificaciones  Notificacion[]
 }
 
 
@@ -66,4 +68,23 @@ model Inscripcion {
   convocatoria    Convocatoria @relation(fields: [convocatoriaId], references: [id])
 
   @@unique([usuarioId, convocatoriaId]) // Un usuario solo se inscribe una vez por convocatoria
+}
+
+model Notificacion {
+  id              Int              @id @default(autoincrement())
+  mensaje         String
+  tipo            TipoNotificacion
+  leida           Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+
+  usuarioId       Int
+  usuario         Usuario          @relation(fields: [usuarioId], references: [id])
+
+  convocatoriaId  Int?
+  convocatoria    Convocatoria?    @relation(fields: [convocatoriaId], references: [id])
+}
+
+enum TipoNotificacion {
+  NUEVA_CONVOCATORIA
+  NOTA_ASIGNADA
 }

@@ -63,6 +63,15 @@ export async function PUT(request: Request) {
             });
         }
 
+        await prisma.notificacion.create({
+            data: {
+                usuarioId: actualizada.usuario.id,
+                tipo: "NOTA_ASIGNADA",
+                mensaje: `Se ha asignado tu nota para la convocatoria "${actualizada.convocatoria.descripcion}": ${nota || "—"}`,
+                convocatoriaId: actualizada.convocatoria.id,
+            },
+        });
+
         const result = {
             ...actualizada,
             usuario: {
