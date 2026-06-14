@@ -48,7 +48,7 @@ export async function PUT(request: Request) {
             where: { id },
             data: { nota },
             include: {
-                usuario: { select: { id: true, firstName: true, lastName: true, username: true, certificado: true } },
+                usuario: { select: { id: true, firstName: true, lastName: true, username: true, certificado: true, nivel: true } },
                 convocatoria: true,
             },
         });
@@ -56,10 +56,10 @@ export async function PUT(request: Request) {
         const nivelesAprobados = ["A2", "B1", "B2", "C1", "C2"];
         const aprobado = nota !== null && nivelesAprobados.includes(nota);
 
-        if (aprobado && !actualizada.usuario.certificado) {
+        if (aprobado) {
             await prisma.usuario.update({
                 where: { id: actualizada.usuario.id },
-                data: { certificado: true },
+                data: { certificado: true, nivel: nota },
             });
         }
 
@@ -77,6 +77,7 @@ export async function PUT(request: Request) {
             usuario: {
                 ...actualizada.usuario,
                 certificado: aprobado ? true : actualizada.usuario.certificado,
+                nivel: aprobado ? nota : actualizada.usuario.nivel,
             },
         };
 
